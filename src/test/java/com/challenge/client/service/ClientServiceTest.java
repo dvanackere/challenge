@@ -3,15 +3,16 @@ package com.challenge.client.service;
 import com.challenge.client.integration.ClientResponse;
 import com.challenge.client.model.Client;
 import com.challenge.client.persistence.ClientsRepository;
+import com.challenge.client.response.Kpi;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.util.Assert;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -45,5 +46,17 @@ class ClientServiceTest {
 
         List<ClientResponse> response = service.getAllClients();
         Assertions.assertTrue(response.size()==2);
+    }
+
+    @Test
+    public void calculoKPI() {
+        List<Client> clients = Arrays.asList(new Client(1,"Daniel","Perez", LocalDate.parse("1981-08-11", DateTimeFormatter.ofPattern("yyyy-MM-dd"))),
+                new Client(2,"Juan","Perez",  LocalDate.parse("1980-06-20", DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
+        Mockito.when(repository.findAll()).thenReturn(clients);
+
+        Kpi kpi = service.calcularKPI();
+
+        Assertions.assertTrue(0.5==kpi.getDesviacionEstandar());
+        Assertions.assertTrue(40.5==kpi.getMedia());
     }
 }
