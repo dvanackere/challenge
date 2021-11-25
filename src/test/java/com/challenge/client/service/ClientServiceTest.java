@@ -16,6 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @SpringBootTest
 class ClientServiceTest {
@@ -54,9 +55,9 @@ class ClientServiceTest {
                 new Client(2,"Juan","Perez",  LocalDate.parse("1980-06-20", DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
         Mockito.when(repository.findAll()).thenReturn(clients);
 
-        Kpi kpi = service.calcularKPI();
+        Optional<Kpi> kpi = service.calcularKPI();
 
-        Assertions.assertTrue(0.5==kpi.getDesviacionEstandar());
-        Assertions.assertTrue(40.5==kpi.getMedia());
+        Assertions.assertTrue(0.5==kpi.get().getDesviacionEstandar());
+        Assertions.assertTrue(40.5==kpi.get().getMedia());
     }
 }

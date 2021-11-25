@@ -17,6 +17,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@ToString
 public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
